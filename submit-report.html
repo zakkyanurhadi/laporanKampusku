@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submit Report - Campus Reporting System</title>
+    <title>Kirim Laporan - Sistem Pelaporan Kampus</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -129,7 +129,7 @@
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-    <!-- Navigation -->
+    <!-- Navigasi -->
     <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
@@ -140,18 +140,18 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
                         </div>
-                        <span class="text-xl font-bold text-gray-900">Campus Reports</span>
+                        <span class="text-xl font-bold text-gray-900">Laporan Kampus</span>
                     </div>
                 </div>
                 
                 <div class="flex items-center space-x-4">
-                    <a href="index.html" class="text-gray-600 hover:text-gray-900 transition-colors">Dashboard</a>
+                    <a href="index.html" class="text-gray-600 hover:text-gray-900 transition-colors">Dasbor</a>
                     <a href="submit-report.html" class="text-blue-600 font-medium border-b-2 border-blue-600 pb-1">Submit Report</a>
                     <a href="admin-dashboard.html" class="text-gray-600 hover:text-gray-900 transition-colors">Admin</a>
                     
-                    <!-- User Profile -->
+                    <!-- Profil Pengguna -->
                     <div class="flex items-center space-x-2">
-                        <img src="resources/user-avatar-1.jpg" alt="User Avatar" class="w-8 h-8 rounded-full object-cover">
+                        <img src="resources/user-avatar-1.jpg" alt="Avatar Pengguna" class="w-8 h-8 rounded-full object-cover">
                         <span class="text-sm font-medium text-gray-700">Sarah Johnson</span>
                     </div>
                 </div>
@@ -159,15 +159,15 @@
         </div>
     </nav>
 
-    <!-- Progress Indicator -->
+    <!-- Indikator Progress -->
     <div class="bg-white border-b border-gray-200">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div class="flex items-center justify-between mb-4">
-                <h1 class="text-2xl font-bold text-gray-900">Submit New Report</h1>
+                <h1 class="text-2xl font-bold text-gray-900">Kirim Laporan Baru</h1>
                 <div class="flex items-center space-x-2 text-sm text-gray-600">
-                    <span>Step</span>
+                    <span>Langkah</span>
                     <span id="currentStep" class="font-medium text-blue-600">1</span>
-                    <span>of 5</span>
+                    <span>dari 5</span>
                 </div>
             </div>
             
@@ -184,98 +184,165 @@
             </div>
             
             <div class="flex items-center justify-between mt-2 text-xs text-gray-600">
-                <span>Photos</span>
-                <span>Location</span>
-                <span>Details</span>
-                <span>Category</span>
-                <span>Review</span>
+                <span>Kategori</span>
+                <span>Detail</span>
+                <span>Lokasi</span>
+                <span>Foto</span>
+                <span>Tinjau</span>
             </div>
         </div>
     </div>
 
-    <!-- Main Form -->
+    <!-- Form Utama -->
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <form id="reportForm" class="space-y-8">
-             <!-- Step 1: Photo Upload -->
-            <div class="form-step" id="formStep1">
+            <!-- Langkah 1: Pilih Kategori -->
+            <div class="form-step active" id="formStep1">
                 <div class="bg-white rounded-xl shadow-sm p-8">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Add Photos</h2>
-                    <p class="text-gray-600 mb-8">Upload photos that help illustrate the issue. You can add multiple photos.</p>
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Pilih Kategori Laporan</h2>
+                    <p class="text-gray-600 mb-8">Pilih kategori yang paling sesuai dengan laporan Anda. Ini membantu kami mengarahkan laporan ke departemen yang tepat.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="category-card border-2 border-gray-200 rounded-lg p-6 text-center" data-category="infrastruktur">
+                            <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Infrastruktur</h3>
+                            <p class="text-sm text-gray-600">Bangunan, jalan, trotoar, utilitas</p>
+                        </div>
+                        
+                        <div class="category-card border-2 border-gray-200 rounded-lg p-6 text-center" data-category="fasilitas">
+                            <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Fasilitas</h3>
+                            <p class="text-sm text-gray-600">AC, pencahayaan, pipa, lift</p>
+                        </div>
+                        
+                        <div class="category-card border-2 border-gray-200 rounded-lg p-6 text-center" data-category="akademik">
+                            <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Akademik</h3>
+                            <p class="text-sm text-gray-600">Peralatan kelas, teknologi, lab</p>
+                        </div>
+                        
+                        <div class="category-card border-2 border-gray-200 rounded-lg p-6 text-center" data-category="keamanan">
+                            <div class="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Keamanan</h3>
+                            <p class="text-sm text-gray-600">CCTV, kontrol akses, darurat</p>
+                        </div>
+                        
+                        <div class="category-card border-2 border-gray-200 rounded-lg p-6 text-center" data-category="pemeliharaan">
+                            <div class="w-16 h-16 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Pemeliharaan</h3>
+                            <p class="text-sm text-gray-600">Lansekap, kebersihan, perawatan umum</p>
+                        </div>
+                        
+                        <div class="category-card border-2 border-gray-200 rounded-lg p-6 text-center" data-category="lainnya">
+                            <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Lainnya</h3>
+                            <p class="text-sm text-gray-600">Masalah yang tidak tercakup di atas</p>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" id="selectedCategory" name="category">
+                </div>
+            </div>
+
+            <!-- Langkah 2: Detail Laporan -->
+            <div class="form-step" id="formStep2">
+                <div class="bg-white rounded-xl shadow-sm p-8">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Detail Laporan</h2>
+                    <p class="text-gray-600 mb-8">Berikan informasi detail tentang masalah yang Anda laporkan.</p>
                     
                     <div class="space-y-6">
-                        <div class="file-drop-zone rounded-lg p-8 text-center" id="fileDropZone">
-                            <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                            </svg>
-                            <p class="text-lg font-medium text-gray-700 mb-2">Drop images here or click to browse</p>
-                            <p class="text-sm text-gray-500 mb-4">Supports JPG, PNG, GIF up to 10MB each</p>
-                            <button type="button" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="document.getElementById('fileInput').click()">
-                                Choose Files
-                            </button>
-                            <input type="file" id="fileInput" multiple accept="image/*" class="hidden">
+                        <div>
+                            <label for="reportTitle" class="block text-sm font-medium text-gray-700 mb-2">Judul Laporan *</label>
+                            <input type="text" id="reportTitle" name="title" required
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="Judul singkat dan deskriptif untuk laporan Anda">
                         </div>
                         
-                        <div id="imagePreviewContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 hidden">
-                            <!-- Image previews will be inserted here -->
+                        <div>
+                            <label for="reportDescription" class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Detail *</label>
+                            <textarea id="reportDescription" name="description" rows="6" required
+                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                      placeholder="Berikan detail sebanyak mungkin tentang masalah..."></textarea>
+                            <p class="text-sm text-gray-500 mt-1">Jelaskan masalahnya, kapan Anda mengetahuinya, dan detail relevan lainnya.</p>
                         </div>
                         
-                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                            <div class="flex items-start space-x-3">
-                                <svg class="w-5 h-5 text-yellow-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                                </svg>
-                                <div>
-                                    <h4 class="text-sm font-medium text-yellow-900">Photo Guidelines</h4>
-                                    <ul class="text-sm text-yellow-700 mt-1 space-y-1">
-                                        <li>• Take clear, well-lit photos of the issue</li>
-                                        <li>• Include multiple angles if helpful</li>
-                                        <li>• Avoid including people in photos for privacy</li>
-                                        <li>• Add a reference object for scale when needed</li>
-                                    </ul>
-                                </div>
-                            </div>
+                        <div>
+                            <label for="priority" class="block text-sm font-medium text-gray-700 mb-2">Tingkat Prioritas</label>
+                            <select id="priority" name="priority" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="rendah">Rendah - Masalah kecil, bisa menunggu</option>
+                                <option value="sedang" selected>Sedang - Penting tapi tidak mendesak</option>
+                                <option value="tinggi">Tinggi - Mendesak, perlu perhatian segera</option>
+                                <option value="kritis">Kritis - Masalah keselamatan atau keamanan</option>
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Step 2: Location -->
-            <div class="form-step" id="formStep2">
+
+            <!-- Langkah 3: Informasi Lokasi -->
+            <div class="form-step" id="formStep3">
                 <div class="bg-white rounded-xl shadow-sm p-8">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Location Information</h2>
-                    <p class="text-gray-600 mb-8">Help us locate the issue by providing specific location details.</p>
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Informasi Lokasi</h2>
+                    <p class="text-gray-600 mb-8">Bantu kami menemukan masalah dengan memberikan detail lokasi yang spesifik.</p>
                     
                     <div class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label for="building" class="block text-sm font-medium text-gray-700 mb-2">Building *</label>
+                                <label for="building" class="block text-sm font-medium text-gray-700 mb-2">Gedung *</label>
                                 <select id="building" name="building" required
                                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    <option value="">Select a building...</option>
-                                    <option value="main-building">Main Building</option>
-                                    <option value="engineering">Engineering Building</option>
-                                    <option value="library">Library</option>
-                                    <option value="student-center">Student Center</option>
-                                    <option value="science-building">Science Building</option>
-                                    <option value="arts-building">Arts Building</option>
+                                    <option value="">Pilih gedung...</option>
+                                    <option value="gedung-utama">Gedung Utama</option>
+                                    <option value="teknik">Gedung Teknik</option>
+                                    <option value="perpustakaan">Perpustakaan</option>
+                                    <option value="pusat-mahasiswa">Pusat Mahasiswa</option>
+                                    <option value="gedung-sains">Gedung Sains</option>
+                                    <option value="gedung-seni">Gedung Seni</option>
                                     <option value="gymnasium">Gymnasium</option>
-                                    <option value="parking-garage">Parking Garage</option>
-                                    <option value="outdoor">Outdoor Area</option>
+                                    <option value="parkir">Gedung Parkir</option>
+                                    <option value="luar-ruangan">Area Luar Ruangan</option>
                                 </select>
                             </div>
                             
                             <div>
-                                <label for="floor" class="block text-sm font-medium text-gray-700 mb-2">Floor/Room</label>
+                                <label for="floor" class="block text-sm font-medium text-gray-700 mb-2">Lantai/Ruangan</label>
                                 <input type="text" id="floor" name="floor"
                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                       placeholder="e.g., 2nd Floor, Room 205">
+                                       placeholder="contoh: Lantai 2, Ruang 205">
                             </div>
                         </div>
                         
                         <div>
-                            <label for="detailedLocation" class="block text-sm font-medium text-gray-700 mb-2">Detailed Location Description</label>
+                            <label for="detailedLocation" class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Lokasi Detail</label>
                             <textarea id="detailedLocation" name="detailedLocation" rows="3"
                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                      placeholder="Provide specific directions to help locate the issue..."></textarea>
+                                      placeholder="Berikan petunjuk spesifik untuk membantu menemukan masalah..."></textarea>
                         </div>
                         
                         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -285,8 +352,8 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 </svg>
                                 <div>
-                                    <h4 class="text-sm font-medium text-blue-900">Location Tips</h4>
-                                    <p class="text-sm text-blue-700 mt-1">Be as specific as possible. Include landmarks, nearby rooms, or any other details that will help our team locate the issue quickly.</p>
+                                    <h4 class="text-sm font-medium text-blue-900">Tips Lokasi</h4>
+                                    <p class="text-sm text-blue-700 mt-1">Jelaskan selengkap mungkin. Sertakan landmark, ruangan terdekat, atau detail lain yang akan membantu tim kami menemukan masalah dengan cepat.</p>
                                 </div>
                             </div>
                         </div>
@@ -294,146 +361,70 @@
                 </div>
             </div>
 
-            <!-- Step 3: Report Details -->
-            <div class="form-step" id="formStep3">
+            <!-- Langkah 4: Upload Foto -->
+            <div class="form-step" id="formStep4">
                 <div class="bg-white rounded-xl shadow-sm p-8">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Report Details</h2>
-                    <p class="text-gray-600 mb-8">Provide detailed information about the issue you're reporting.</p>
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Tambahkan Foto</h2>
+                    <p class="text-gray-600 mb-8">Upload foto yang membantu mengilustrasikan masalah. Anda dapat menambahkan beberapa foto.</p>
                     
                     <div class="space-y-6">
-                        <div>
-                            <label for="reportTitle" class="block text-sm font-medium text-gray-700 mb-2">Report Title *</label>
-                            <input type="text" id="reportTitle" name="title" required
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                   placeholder="Brief, descriptive title for your report">
+                        <div class="file-drop-zone rounded-lg p-8 text-center" id="fileDropZone">
+                            <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                            <p class="text-lg font-medium text-gray-700 mb-2">Letakkan gambar di sini atau klik untuk memilih</p>
+                            <p class="text-sm text-gray-500 mb-4">Mendukung JPG, PNG, GIF hingga 10MB per file</p>
+                            <button type="button" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="document.getElementById('fileInput').click()">
+                                Pilih File
+                            </button>
+                            <input type="file" id="fileInput" multiple accept="image/*" class="hidden">
                         </div>
                         
-                        <div>
-                            <label for="reportDescription" class="block text-sm font-medium text-gray-700 mb-2">Detailed Description *</label>
-                            <textarea id="reportDescription" name="description" rows="6" required
-                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                      placeholder="Provide as much detail as possible about the issue..."></textarea>
-                            <p class="text-sm text-gray-500 mt-1">Be specific about the problem, when you noticed it, and any other relevant details.</p>
+                        <div id="imagePreviewContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 hidden">
+                            <!-- Pratinjau gambar akan dimasukkan di sini -->
                         </div>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="priority" class="block text-sm font-medium text-gray-700 mb-2">Priority Level</label>
-                                <select id="priority" name="priority" 
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    <option value="low">Low - Minor issue, can wait</option>
-                                    <option value="medium" selected>Medium - Important but not urgent</option>
-                                    <option value="high">High - Urgent, needs immediate attention</option>
-                                    <option value="critical">Critical - Safety or security concern</option>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <label for="locationDescription" class="block text-sm font-medium text-gray-700 mb-2">Specific Location</label>
-                                <input type="text" id="locationDescription" name="locationDescription"
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                       placeholder="e.g., Room 205, Building A, Near main entrance">
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                            <div class="flex items-start space-x-3">
+                                <svg class="w-5 h-5 text-yellow-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                </svg>
+                                <div>
+                                    <h4 class="text-sm font-medium text-yellow-900">Panduan Foto</h4>
+                                    <ul class="text-sm text-yellow-700 mt-1 space-y-1">
+                                        <li>• Ambil foto yang jelas dan cukup cahaya</li>
+                                        <li>• Sertakan beberapa sudut jika membantu</li>
+                                        <li>• Hindari menyertakan orang dalam foto untuk privasi</li>
+                                        <li>• Tambahkan objek referensi untuk skala jika diperlukan</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Step 4: Category Selection -->
-            <div class="form-step active" id="formStep4">
-                <div class="bg-white rounded-xl shadow-sm p-8">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Select Report Category</h2>
-                    <p class="text-gray-600 mb-8">Choose the category that best describes your report. This helps us route your report to the appropriate department.</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="category-card border-2 border-gray-200 rounded-lg p-6 text-center" data-category="infrastructure">
-                            <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                                </svg>
-                            </div>
-                            <h3 class="font-semibold text-gray-900 mb-2">Infrastructure</h3>
-                            <p class="text-sm text-gray-600">Buildings, roads, sidewalks, utilities</p>
-                        </div>
-                        
-                        <div class="category-card border-2 border-gray-200 rounded-lg p-6 text-center" data-category="facilities">
-                            <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                                </svg>
-                            </div>
-                            <h3 class="font-semibold text-gray-900 mb-2">Facilities</h3>
-                            <p class="text-sm text-gray-600">HVAC, lighting, plumbing, elevators</p>
-                        </div>
-                        
-                        <div class="category-card border-2 border-gray-200 rounded-lg p-6 text-center" data-category="academic">
-                            <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                                </svg>
-                            </div>
-                            <h3 class="font-semibold text-gray-900 mb-2">Academic</h3>
-                            <p class="text-sm text-gray-600">Classroom equipment, technology, labs</p>
-                        </div>
-                        
-                        <div class="category-card border-2 border-gray-200 rounded-lg p-6 text-center" data-category="security">
-                            <div class="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="font-semibold text-gray-900 mb-2">Security</h3>
-                            <p class="text-sm text-gray-600">Cameras, access control, emergency</p>
-                        </div>
-                        
-                        <div class="category-card border-2 border-gray-200 rounded-lg p-6 text-center" data-category="maintenance">
-                            <div class="w-16 h-16 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="font-semibold text-gray-900 mb-2">Maintenance</h3>
-                            <p class="text-sm text-gray-600">Landscaping, cleaning, general upkeep</p>
-                        </div>
-                        
-                        <div class="category-card border-2 border-gray-200 rounded-lg p-6 text-center" data-category="other">
-                            <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="font-semibold text-gray-900 mb-2">Other</h3>
-                            <p class="text-sm text-gray-600">Issues not covered above</p>
-                        </div>
-                    </div>
-                    
-                    <input type="hidden" id="selectedCategory" name="category">
-                </div>
-            </div>
 
-
-
-            <!-- Step 5: Review and Submit -->
+            <!-- Langkah 5: Tinjau dan Kirim -->
             <div class="form-step" id="formStep5">
                 <div class="bg-white rounded-xl shadow-sm p-8">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Review and Submit</h2>
-                    <p class="text-gray-600 mb-8">Please review your report details before submitting.</p>
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Tinjau dan Kirim</h2>
+                    <p class="text-gray-600 mb-8">Silakan tinjau detail laporan Anda sebelum mengirim.</p>
                     
                     <div class="space-y-6">
-                        <!-- Report Summary -->
+                        <!-- Ringkasan Laporan -->
                         <div class="bg-gray-50 rounded-lg p-6">
-                            <h3 class="font-semibold text-gray-900 mb-4">Report Summary</h3>
+                            <h3 class="font-semibold text-gray-900 mb-4">Ringkasan Laporan</h3>
                             <div class="space-y-3" id="reportSummary">
-                                <!-- Summary will be populated by JavaScript -->
+                                <!-- Ringkasan akan diisi oleh JavaScript -->
                             </div>
                         </div>
                         
-                        <!-- Privacy Settings -->
+                        <!-- Pengaturan Privasi -->
                         <div class="border border-gray-200 rounded-lg p-6">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <h3 class="font-semibold text-gray-900">Make Report Private</h3>
-                                    <p class="text-sm text-gray-600 mt-1">Only authorized personnel will be able to view this report.</p>
+                                    <h3 class="font-semibold text-gray-900">Buat Laporan Pribadi</h3>
+                                    <p class="text-sm text-gray-600 mt-1">Hanya personel yang berwenang yang dapat melihat laporan ini.</p>
                                 </div>
                                 <label class="toggle-switch">
                                     <input type="checkbox" id="isPrivate" name="isPrivate">
@@ -442,20 +433,20 @@
                             </div>
                         </div>
                         
-                        <!-- Terms and Conditions -->
+                        <!-- Syarat dan Ketentuan -->
                         <div class="space-y-4">
                             <label class="flex items-start space-x-3">
                                 <input type="checkbox" id="agreeTerms" name="agreeTerms" required class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                                 <span class="text-sm text-gray-700">
-                                    I confirm that the information provided in this report is accurate to the best of my knowledge. 
-                                    I understand that false reporting may result in disciplinary action.
+                                    Saya mengonfirmasi bahwa informasi yang diberikan dalam laporan ini akurat sesuai pengetahuan saya. 
+                                    Saya memahami bahwa pelaporan palsu dapat mengakibatkan tindakan disipliner.
                                 </span>
                             </label>
                             
                             <label class="flex items-start space-x-3">
                                 <input type="checkbox" id="agreeContact" name="agreeContact" class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                                 <span class="text-sm text-gray-700">
-                                    I agree to be contacted by maintenance staff if additional information is needed to resolve this issue.
+                                    Saya setuju untuk dihubungi oleh staf pemeliharaan jika informasi tambahan diperlukan untuk menyelesaikan masalah ini.
                                 </span>
                             </label>
                         </div>
@@ -463,21 +454,21 @@
                 </div>
             </div>
 
-            <!-- Navigation Buttons -->
+            <!-- Tombol Navigasi -->
             <div class="flex items-center justify-between pt-8">
                 <button type="button" id="prevButton" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors hidden" onclick="previousStep()">
-                    Previous
+                    Sebelumnya
                 </button>
                 
                 <div class="flex items-center space-x-4 ml-auto">
                     <button type="button" id="saveDraftButton" class="px-6 py-3 text-gray-600 hover:text-gray-900 transition-colors" onclick="saveDraft()">
-                        Save Draft
+                        Simpan Draft
                     </button>
                     <button type="button" id="nextButton" class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" onclick="nextStep()">
-                        Next Step
+                        Langkah Berikutnya
                     </button>
                     <button type="submit" id="submitButton" class="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors hidden">
-                        Submit Report
+                        Kirim Laporan
                     </button>
                 </div>
             </div>
@@ -488,18 +479,18 @@
     <footer class="bg-white border-t border-gray-200 mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="text-center text-gray-600">
-                <p>&copy; 2024 Campus Reporting System. Streamlining university operations through technology.</p>
+                <p>&copy; 2024 Sistem Pelaporan Kampus. Merampingkan operasi universitas melalui teknologi.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Form state management
+        // Manajemen state form
         let currentStep = 1;
         let selectedCategory = '';
         let uploadedFiles = [];
         
-        // Initialize form
+        // Inisialisasi form
         document.addEventListener('DOMContentLoaded', function() {
             initializeForm();
             setupFileUpload();
@@ -515,18 +506,15 @@
             const categoryCards = document.querySelectorAll('.category-card');
             categoryCards.forEach(card => {
                 card.addEventListener('click', function() {
-                    // Remove selection from all cards
+                    // Hapus pilihan dari semua kartu
                     categoryCards.forEach(c => c.classList.remove('selected'));
                     
-                    // Add selection to clicked card
+                    // Tambahkan pilihan ke kartu yang diklik
                     this.classList.add('selected');
                     
-                    // Store selected category
+                    // Simpan kategori yang dipilih
                     selectedCategory = this.dataset.category;
                     document.getElementById('selectedCategory').value = selectedCategory;
-                    
-                    // Enable next button
-                    document.getElementById('nextButton').disabled = false;
                 });
             });
         }
@@ -535,7 +523,7 @@
             const dropZone = document.getElementById('fileDropZone');
             const fileInput = document.getElementById('fileInput');
             
-            // Drag and drop events
+            // Event drag and drop
             dropZone.addEventListener('dragover', function(e) {
                 e.preventDefault();
                 this.classList.add('dragover');
@@ -553,7 +541,7 @@
                 handleFileUpload(files);
             });
             
-            // File input change
+            // Perubahan input file
             fileInput.addEventListener('change', function() {
                 const files = Array.from(this.files);
                 handleFileUpload(files);
@@ -565,7 +553,7 @@
             const validFiles = files.filter(file => file.type.startsWith('image/') && file.size <= 10 * 1024 * 1024);
             
             if (validFiles.length === 0) {
-                alert('Please select valid image files (JPG, PNG, GIF) under 10MB.');
+                alert('Silakan pilih file gambar yang valid (JPG, PNG, GIF) di bawah 10MB.');
                 return;
             }
             
@@ -579,7 +567,7 @@
                     const previewDiv = document.createElement('div');
                     previewDiv.className = 'image-preview w-full h-32 rounded-lg border border-gray-200';
                     previewDiv.innerHTML = `
-                        <img src="${e.target.result}" alt="Preview">
+                        <img src="${e.target.result}" alt="Pratinjau">
                         <button type="button" class="remove-image" onclick="removeImage(this)">
                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -608,6 +596,7 @@
                 if (currentStep < 5) {
                     currentStep++;
                     updateStepDisplay();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     
                     if (currentStep === 5) {
                         populateReviewSummary();
@@ -620,11 +609,12 @@
             if (currentStep > 1) {
                 currentStep--;
                 updateStepDisplay();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
         
         function updateStepDisplay() {
-            // Update step indicators
+            // Update indikator langkah
             for (let i = 1; i <= 5; i++) {
                 const stepElement = document.getElementById(`step${i}`);
                 const formStep = document.getElementById(`formStep${i}`);
@@ -640,13 +630,13 @@
                     stepElement.innerHTML = i;
                 }
                 
-                // Show/hide form steps
+                // Tampilkan/sembunyikan langkah form
                 if (formStep) {
                     formStep.classList.toggle('active', i === currentStep);
                 }
             }
             
-            // Update navigation buttons
+            // Update tombol navigasi
             const prevButton = document.getElementById('prevButton');
             const nextButton = document.getElementById('nextButton');
             const submitButton = document.getElementById('submitButton');
@@ -655,10 +645,10 @@
             nextButton.classList.toggle('hidden', currentStep === 5);
             submitButton.classList.toggle('hidden', currentStep !== 5);
             
-            // Update current step display
+            // Update tampilan langkah saat ini
             document.getElementById('currentStep').textContent = currentStep;
             
-            // Animate step transition
+            // Animasi transisi langkah
             const activeStep = document.querySelector('.form-step.active');
             if (activeStep) {
                 anime({
@@ -675,7 +665,7 @@
             switch (currentStep) {
                 case 1:
                     if (!selectedCategory) {
-                        alert('Please select a category for your report.');
+                        alert('Silakan pilih kategori untuk laporan Anda.');
                         return false;
                     }
                     break;
@@ -683,21 +673,32 @@
                     const title = document.getElementById('reportTitle').value.trim();
                     const description = document.getElementById('reportDescription').value.trim();
                     if (!title || !description) {
-                        alert('Please fill in all required fields.');
+                        alert('Silakan isi semua kolom yang wajib diisi.');
+                        return false;
+                    }
+                    if (title.length < 5) {
+                        alert('Judul laporan harus minimal 5 karakter.');
+                        return false;
+                    }
+                    if (description.length < 20) {
+                        alert('Deskripsi laporan harus minimal 20 karakter.');
                         return false;
                     }
                     break;
                 case 3:
                     const building = document.getElementById('building').value;
                     if (!building) {
-                        alert('Please select a building.');
+                        alert('Silakan pilih gedung.');
                         return false;
                     }
+                    break;
+                case 4:
+                    // Foto opsional, tidak ada validasi wajib
                     break;
                 case 5:
                     const agreeTerms = document.getElementById('agreeTerms').checked;
                     if (!agreeTerms) {
-                        alert('You must agree to the terms and conditions to submit your report.');
+                        alert('Anda harus menyetujui syarat dan ketentuan untuk mengirim laporan Anda.');
                         return false;
                     }
                     break;
@@ -710,66 +711,84 @@
             const formData = new FormData(document.getElementById('reportForm'));
             
             const categoryNames = {
-                'infrastructure': 'Infrastructure',
-                'facilities': 'Facilities',
-                'academic': 'Academic',
-                'security': 'Security',
-                'maintenance': 'Maintenance',
-                'other': 'Other'
+                'infrastruktur': 'Infrastruktur',
+                'fasilitas': 'Fasilitas',
+                'akademik': 'Akademik',
+                'keamanan': 'Keamanan',
+                'pemeliharaan': 'Pemeliharaan',
+                'lainnya': 'Lainnya'
             };
             
             const priorityNames = {
-                'low': 'Low',
-                'medium': 'Medium',
-                'high': 'High',
-                'critical': 'Critical'
+                'rendah': 'Rendah',
+                'sedang': 'Sedang',
+                'tinggi': 'Tinggi',
+                'kritis': 'Kritis'
+            };
+            
+            const buildingNames = {
+                'gedung-utama': 'Gedung Utama',
+                'teknik': 'Gedung Teknik',
+                'perpustakaan': 'Perpustakaan',
+                'pusat-mahasiswa': 'Pusat Mahasiswa',
+                'gedung-sains': 'Gedung Sains',
+                'gedung-seni': 'Gedung Seni',
+                'gymnasium': 'Gymnasium',
+                'parkir': 'Gedung Parkir',
+                'luar-ruangan': 'Area Luar Ruangan'
             };
             
             summaryContainer.innerHTML = `
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Category:</span>
-                    <span class="font-medium">${categoryNames[selectedCategory] || 'Not selected'}</span>
+                <div class="flex justify-between py-2 border-b border-gray-200">
+                    <span class="text-gray-600">Kategori:</span>
+                    <span class="font-medium">${categoryNames[selectedCategory] || 'Tidak dipilih'}</span>
                 </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Title:</span>
-                    <span class="font-medium">${formData.get('title') || 'Not provided'}</span>
+                <div class="flex justify-between py-2 border-b border-gray-200">
+                    <span class="text-gray-600">Judul:</span>
+                    <span class="font-medium">${formData.get('title') || 'Tidak diberikan'}</span>
                 </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Priority:</span>
-                    <span class="font-medium">${priorityNames[formData.get('priority')] || 'Medium'}</span>
+                <div class="flex justify-between py-2 border-b border-gray-200">
+                    <span class="text-gray-600">Prioritas:</span>
+                    <span class="font-medium">${priorityNames[formData.get('priority')] || 'Sedang'}</span>
                 </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Building:</span>
-                    <span class="font-medium">${formData.get('building') || 'Not selected'}</span>
+                <div class="flex justify-between py-2 border-b border-gray-200">
+                    <span class="text-gray-600">Gedung:</span>
+                    <span class="font-medium">${buildingNames[formData.get('building')] || 'Tidak dipilih'}</span>
                 </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Photos:</span>
-                    <span class="font-medium">${uploadedFiles.length} image(s)</span>
+                <div class="flex justify-between py-2 border-b border-gray-200">
+                    <span class="text-gray-600">Lantai/Ruangan:</span>
+                    <span class="font-medium">${formData.get('floor') || 'Tidak diberikan'}</span>
                 </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Privacy:</span>
-                    <span class="font-medium">${formData.get('isPrivate') ? 'Private' : 'Public'}</span>
+                <div class="flex justify-between py-2 border-b border-gray-200">
+                    <span class="text-gray-600">Foto:</span>
+                    <span class="font-medium">${uploadedFiles.length} gambar</span>
+                </div>
+                <div class="flex justify-between py-2">
+                    <span class="text-gray-600">Privasi:</span>
+                    <span class="font-medium">${document.getElementById('isPrivate').checked ? 'Pribadi' : 'Publik'}</span>
                 </div>
             `;
         }
         
         function saveDraft() {
             const formData = new FormData(document.getElementById('reportForm'));
-            const draftData = {};
+            const draftData = {
+                currentStep: currentStep,
+                selectedCategory: selectedCategory,
+                uploadedFilesCount: uploadedFiles.length,
+                timestamp: new Date().toISOString()
+            };
             
             for (let [key, value] of formData.entries()) {
                 draftData[key] = value;
             }
             
-            draftData.selectedCategory = selectedCategory;
-            draftData.uploadedFiles = uploadedFiles.length;
-            
             localStorage.setItem('reportDraft', JSON.stringify(draftData));
             
-            // Show success message
+            // Tampilkan pesan sukses
             const button = document.getElementById('saveDraftButton');
             const originalText = button.textContent;
-            button.textContent = 'Draft Saved!';
+            button.textContent = 'Draft Tersimpan!';
             button.classList.add('text-green-600');
             
             setTimeout(() => {
@@ -781,63 +800,105 @@
         function loadDraftData() {
             const draftData = localStorage.getItem('reportDraft');
             if (draftData) {
-                try {
-                    const data = JSON.parse(draftData);
-                    
-                    // Populate form fields
-                    Object.keys(data).forEach(key => {
-                        const element = document.getElementById(key) || document.querySelector(`[name="${key}"]`);
-                        if (element) {
-                            element.value = data[key];
-                        }
-                    });
-                    
-                    // Restore category selection
-                    if (data.selectedCategory) {
-                        selectedCategory = data.selectedCategory;
-                        document.getElementById('selectedCategory').value = selectedCategory;
+                const shouldLoad = confirm('Draft laporan ditemukan. Apakah Anda ingin melanjutkan dari draft?');
+                
+                if (shouldLoad) {
+                    try {
+                        const data = JSON.parse(draftData);
                         
-                        const categoryCard = document.querySelector(`[data-category="${selectedCategory}"]`);
-                        if (categoryCard) {
-                            categoryCard.classList.add('selected');
+                        // Isi kolom form
+                        Object.keys(data).forEach(key => {
+                            if (key === 'currentStep' || key === 'selectedCategory' || key === 'uploadedFilesCount' || key === 'timestamp') {
+                                return;
+                            }
+                            
+                            const element = document.getElementById(key) || document.querySelector(`[name="${key}"]`);
+                            if (element) {
+                                if (element.type === 'checkbox') {
+                                    element.checked = data[key] === 'on' || data[key] === true;
+                                } else {
+                                    element.value = data[key];
+                                }
+                            }
+                        });
+                        
+                        // Pulihkan pilihan kategori
+                        if (data.selectedCategory) {
+                            selectedCategory = data.selectedCategory;
+                            document.getElementById('selectedCategory').value = selectedCategory;
+                            
+                            const categoryCard = document.querySelector(`[data-category="${selectedCategory}"]`);
+                            if (categoryCard) {
+                                categoryCard.classList.add('selected');
+                            }
                         }
+                        
+                        // Pulihkan langkah saat ini jika ada
+                        if (data.currentStep && data.currentStep > 1) {
+                            currentStep = data.currentStep;
+                            updateStepDisplay();
+                        }
+                        
+                        alert('Draft berhasil dimuat!');
+                    } catch (e) {
+                        console.error('Error memuat data draft:', e);
+                        alert('Terjadi kesalahan saat memuat draft.');
                     }
-                } catch (e) {
-                    console.error('Error loading draft data:', e);
+                } else {
+                    localStorage.removeItem('reportDraft');
                 }
             }
         }
         
-        // Form submission
+        // Pengiriman form
         document.getElementById('reportForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             if (validateCurrentStep()) {
-                // Simulate form submission
+                // Simulasi pengiriman form
                 const submitButton = document.getElementById('submitButton');
                 const originalText = submitButton.textContent;
                 
                 submitButton.disabled = true;
-                submitButton.textContent = 'Submitting...';
+                submitButton.textContent = 'Mengirim...';
                 submitButton.classList.add('opacity-50');
                 
-                // Simulate API call
+                // Simulasi panggilan API
                 setTimeout(() => {
-                    // Clear draft
+                    // Hapus draft
                     localStorage.removeItem('reportDraft');
                     
-                    // Show success message and redirect
-                    alert('Report submitted successfully! You will be redirected to the dashboard.');
+                    // Tampilkan pesan sukses dan redirect
+                    alert('Laporan berhasil dikirim! Anda akan diarahkan ke dasbor.');
                     window.location.href = 'index.html';
                 }, 2000);
             }
         });
         
-        // Auto-save functionality
+        // Fungsi auto-save
         let autoSaveTimeout;
         document.getElementById('reportForm').addEventListener('input', function() {
             clearTimeout(autoSaveTimeout);
-            autoSaveTimeout = setTimeout(saveDraft, 30000); // Auto-save every 30 seconds
+            autoSaveTimeout = setTimeout(() => {
+                // Auto-save otomatis setelah 30 detik tidak ada input
+                const draftExists = localStorage.getItem('reportDraft');
+                if (draftExists) {
+                    saveDraft();
+                }
+            }, 30000);
+        });
+        
+        // Peringatan sebelum meninggalkan halaman
+        window.addEventListener('beforeunload', function(e) {
+            const hasData = document.getElementById('reportTitle').value.trim() || 
+                           document.getElementById('reportDescription').value.trim() ||
+                           selectedCategory;
+            
+            if (hasData && currentStep < 5) {
+                e.preventDefault();
+                e.returnValue = 'Anda memiliki perubahan yang belum disimpan. Apakah Anda yakin ingin meninggalkan halaman?';
+                return e.returnValue;
+            }
         });
     </script>
 </body>
