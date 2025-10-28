@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Reporting System - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/splitting@1.0.6/dist/splitting.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .status-badge {
+            @apply px-3 py-1 rounded-full text-xs font-medium;
+        }
+        .status-pending { @apply bg-amber-100 text-amber-800; }
+        .status-processing { @apply bg-blue-100 text-blue-800; }
+        .status-completed { @apply bg-green-100 text-green-800; }
+        .status-rejected { @apply bg-red-100 text-red-800; }
+        .notification-dot {
+            @apply absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full;
+        }
+        .particle-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">Campus Reports</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-blue-600 font-medium border-b-2 border-blue-600 pb-1">Dashboard</a>
+                    <a href="submit-report.html" class="text-gray-600 hover:text-gray-900 transition-colors">Submit Report</a>
+                    <a href="admin-dashboard.html" class="text-gray-600 hover:text-gray-900 transition-colors">Admin</a>
+                    
+                    <!-- Notifications -->
+                    <div class="relative">
+                        <button class="p-2 text-gray-600 hover:text-gray-900 relative">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-12"></path>
+                            </svg>
+                            <div class="notification-dot"></div>
+                        </button>
+                    </div>
+                    
+                    <!-- User Profile -->
+                    <div class="flex items-center space-x-2">
+                        <img src="resources/user-avatar-1.jpg" alt="User Avatar" class="w-8 h-8 rounded-full object-cover">
+                        <span class="text-sm font-medium text-gray-700">Sarah Johnson</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg relative py-12 overflow-hidden">
+        <canvas id="particleCanvas" class="particle-bg"></canvas>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                    <span id="typed-text"></span>
+                </h1>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Streamline campus operations with our comprehensive reporting system. 
+                    Track, manage, and resolve issues efficiently across all university facilities.
+                </p>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl p-6 shadow-sm card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Reports</p>
+                            <p class="text-3xl font-bold text-gray-900" id="total-reports">1,247</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-sm card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">In Progress</p>
+                            <p class="text-3xl font-bold text-blue-600" id="in-progress">342</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-sm card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Resolved</p>
+                            <p class="text-3xl font-bold text-green-600" id="resolved">892</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-sm card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Response Time</p>
+                            <p class="text-3xl font-bold text-purple-600" id="response-time">2.4h</p>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="flex justify-center space-x-4">
+                <a href="submit-report.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors card-hover">
+                    Submit New Report
+                </a>
+                <button class="bg-white text-gray-700 px-6 py-3 rounded-lg font-medium border border-gray-300 hover:bg-gray-50 transition-colors card-hover" onclick="showAdvancedFilters()">
+                    Advanced Search
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Dashboard Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Analytics Section -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Status Overview Chart -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-gray-900">Report Status Overview</h2>
+                        <div class="flex space-x-2">
+                            <button class="text-sm text-gray-600 hover:text-gray-900 px-3 py-1 rounded-md hover:bg-gray-100" onclick="updateChart('week')">Week</button>
+                            <button class="text-sm text-blue-600 bg-blue-50 px-3 py-1 rounded-md" onclick="updateChart('month')">Month</button>
+                            <button class="text-sm text-gray-600 hover:text-gray-900 px-3 py-1 rounded-md hover:bg-gray-100" onclick="updateChart('year')">Year</button>
+                        </div>
+                    </div>
+                    <div id="statusChart" class="h-80"></div>
+                </div>
+                
+                <!-- Category Breakdown -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Reports by Category</h2>
+                    <div id="categoryChart" class="h-64"></div>
+                </div>
+            </div>
+            
+            <!-- Recent Reports Sidebar -->
+            <div class="space-y-6">
+                <!-- Search and Filter -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Search Reports</h3>
+                    <div class="space-y-4">
+                        <div class="relative">
+                            <input type="text" placeholder="Search by ID, title, or location..." 
+                                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   id="searchInput" onkeyup="filterReports()">
+                            <svg class="absolute left-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Status Filter</label>
+                            <select class="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                    id="statusFilter" onchange="filterReports()">
+                                <option value="">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="processing">In Progress</option>
+                                <option value="completed">Completed</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Category Filter</label>
+                            <select class="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                    id="categoryFilter" onchange="filterReports()">
+                                <option value="">All Categories</option>
+                                <option value="infrastructure">Infrastructure</option>
+                                <option value="academic">Academic</option>
+                                <option value="facilities">Facilities</option>
+                                <option value="security">Security</option>
+                                <option value="maintenance">Maintenance</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Reports -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Recent Reports</h3>
+                        <button class="text-sm text-blue-600 hover:text-blue-800" onclick="refreshReports()">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-4" id="reportsList">
+                        <!-- Reports will be populated by JavaScript -->
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <a href="report-detail.html" class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                            View All Reports →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center text-gray-600">
+                <p>&copy; 2024 Campus Reporting System. Streamlining university operations through technology.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Advanced Search Modal -->
+    <div id="advancedSearchModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">Advanced Search</h3>
+                <button onclick="hideAdvancedFilters()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Report ID</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="e.g., L2510010004">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="date" class="border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <input type="date" class="border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Building name or area">
+                </div>
+                
+                <div class="flex space-x-3 pt-4">
+                    <button class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                        Search
+                    </button>
+                    <button class="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors" onclick="hideAdvancedFilters()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

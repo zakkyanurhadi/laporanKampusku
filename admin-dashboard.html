@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Campus Reporting System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .status-badge {
+            @apply px-2 py-1 rounded-full text-xs font-medium;
+        }
+        .status-pending { @apply bg-amber-100 text-amber-800; }
+        .status-processing { @apply bg-blue-100 text-blue-800; }
+        .status-completed { @apply bg-green-100 text-green-800; }
+        .status-rejected { @apply bg-red-100 text-red-800; }
+        .status-validating { @apply bg-purple-100 text-purple-800; }
+        .priority-indicator {
+            @apply w-2 h-2 rounded-full;
+        }
+        .priority-low { @apply bg-green-400; }
+        .priority-medium { @apply bg-yellow-400; }
+        .priority-high { @apply bg-orange-400; }
+        .priority-critical { @apply bg-red-400; }
+        .data-table {
+            @apply w-full text-sm;
+        }
+        .data-table th {
+            @apply px-4 py-3 text-left font-medium text-gray-700 bg-gray-50 border-b border-gray-200;
+        }
+        .data-table td {
+            @apply px-4 py-3 border-b border-gray-100;
+        }
+        .data-table tr:hover {
+            @apply bg-gray-50;
+        }
+        .metric-card {
+            @apply bg-white rounded-xl p-6 shadow-sm border border-gray-200;
+        }
+        .chart-container {
+            @apply bg-white rounded-xl p-6 shadow-sm border border-gray-200;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">Campus Reports</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-gray-600 hover:text-gray-900 transition-colors">Dashboard</a>
+                    <a href="submit-report.html" class="text-gray-600 hover:text-gray-900 transition-colors">Submit Report</a>
+                    <a href="admin-dashboard.html" class="text-blue-600 font-medium border-b-2 border-blue-600 pb-1">Admin</a>
+                    
+                    <!-- User Profile -->
+                    <div class="flex items-center space-x-2">
+                        <img src="resources/user-avatar-1.jpg" alt="User Avatar" class="w-8 h-8 rounded-full object-cover">
+                        <span class="text-sm font-medium text-gray-700">Sarah Johnson</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+                    <p class="text-gray-600 mt-1">System management and analytics</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" onclick="exportData()">
+                        Export Data
+                    </button>
+                    <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors" onclick="systemSettings()">
+                        System Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="metric-card card-hover">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total Reports</p>
+                        <p class="text-3xl font-bold text-gray-900" id="totalReports">1,247</p>
+                        <p class="text-sm text-green-600 mt-1">↗ +12% from last month</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="metric-card card-hover">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Active Users</p>
+                        <p class="text-3xl font-bold text-gray-900" id="activeUsers">324</p>
+                        <p class="text-sm text-green-600 mt-1">↗ +8% from last week</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="metric-card card-hover">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Avg Response Time</p>
+                        <p class="text-3xl font-bold text-gray-900" id="avgResponseTime">2.4h</p>
+                        <p class="text-sm text-green-600 mt-1">↘ -15% improvement</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="metric-card card-hover">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Completion Rate</p>
+                        <p class="text-3xl font-bold text-gray-900" id="completionRate">94.2%</p>
+                        <p class="text-sm text-green-600 mt-1">↗ +3% this month</p>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Reports Trend -->
+            <div class="chart-container">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-semibold text-gray-900">Reports Trend</h2>
+                    <div class="flex space-x-2">
+                        <button class="text-sm text-gray-600 hover:text-gray-900 px-3 py-1 rounded-md hover:bg-gray-100" onclick="updateTrendChart('week')">Week</button>
+                        <button class="text-sm text-blue-600 bg-blue-50 px-3 py-1 rounded-md" onclick="updateTrendChart('month')">Month</button>
+                        <button class="text-sm text-gray-600 hover:text-gray-900 px-3 py-1 rounded-md hover:bg-gray-100" onclick="updateTrendChart('year')">Year</button>
+                    </div>
+                </div>
+                <div id="trendChart" class="h-80"></div>
+            </div>
+            
+            <!-- Category Distribution -->
+            <div class="chart-container">
+                <h2 class="text-lg font-semibold text-gray-900 mb-6">Reports by Category</h2>
+                <div id="categoryChart" class="h-80"></div>
+            </div>
+        </div>
+
+        <!-- User Management and Recent Reports -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Recent Reports -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-lg font-semibold text-gray-900">Recent Reports</h2>
+                        <button class="text-sm text-blue-600 hover:text-blue-800" onclick="viewAllReports()">View All →</button>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Report ID</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                    <th>Assigned To</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportsTable">
+                                <!-- Table rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User Management -->
+            <div class="space-y-6">
+                <!-- User Statistics -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">User Statistics</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Total Users</span>
+                            <span class="font-semibold text-gray-900">1,247</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Administrators</span>
+                            <span class="font-semibold text-gray-900">12</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Staff</span>
+                            <span class="font-semibold text-gray-900">89</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Students</span>
+                            <span class="font-semibold text-gray-900">1,146</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" onclick="manageUsers()">
+                            Manage Users
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- System Health -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">System Health</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Server Status</span>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span class="text-sm font-medium text-green-600">Online</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Database</span>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span class="text-sm font-medium text-green-600">Healthy</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">API Response</span>
+                            <span class="text-sm font-medium text-gray-900">124ms</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Storage Used</span>
+                            <span class="text-sm font-medium text-gray-900">67.3%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <button class="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors" onclick="viewSystemLogs()">
+                            View System Logs
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                    <div class="space-y-3">
+                        <button class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-left" onclick="generateReport()">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span>Generate Report</span>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-left" onclick="backupData()">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                                </svg>
+                                <span>Backup Data</span>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-left" onclick="sendNotification()">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-12"></path>
+                                </svg>
+                                <span>Send Notification</span>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-left" onclick="maintenanceMode()">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                <span>Maintenance Mode</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center text-gray-600">
+                <p>&copy; 2024 Campus Reporting System. Streamlining university operations through technology.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample data for demonstration
+        const recentReports = [
+            {
+                id: 'L2510010004',
+                title: 'Broken Light Fixture in Engineering Building',
+                category: 'Infrastructure',
+                status: 'processing',
+                priority: 'medium',
+                assignedTo: 'Maintenance Team A',
+                submittedDate: '2024-01-15T10:30:00Z'
+            },
+            {
+                id: 'L2510010005',
+                title: 'AC Not Working in Library',
+                category: 'Facilities',
+                status: 'pending',
+                priority: 'high',
+                assignedTo: 'HVAC Team',
+                submittedDate: '2024-01-15T14:20:00Z'
+            },
+            {
+                id: 'L2510010006',
+                title: 'Damaged Sidewalk Near Student Center',
+                category: 'Infrastructure',
+                status: 'completed',
+                priority: 'low',
+                assignedTo: 'Grounds Maintenance',
+                submittedDate: '2024-01-14T09:15:00Z'
+            },
+            {
+                id: 'L2510010007',
+                title: 'Projector Issue in Lecture Hall B',
+                category: 'Academic',
+                status: 'processing',
+                priority: 'high',
+                assignedTo: 'AV Support Team',
+                submittedDate: '2024-01-16T08:45:00Z'
+            },
+            {
+                id: 'L2510010008',
+                title: 'Security Camera Outage - Parking Lot C',
+                category: 'Security',
+                status: 'validating',
+                priority: 'high',
+                assignedTo: 'Security Systems',
+                submittedDate: '2024-01-13T16:30:00Z'
+            }
+        ];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeAdminDashboard();
+            populateReportsTable();
+            initializeCharts();
+            animateMetrics();
+        });
+
+        function initializeAdminDashboard() {
+            console.log('Admin Dashboard initialized');
+        }
+
+        function populateReportsTable() {
+            const tableBody = document.getElementById('reportsTable');
+            tableBody.innerHTML = '';
+            
+            recentReports.forEach(report => {
+                const row = createReportRow(report);
+                tableBody.appendChild(row);
+            });
+            
+            // Animate table rows
+            anime({
+                targets: '#reportsTable tr',
+                translateY: [20, 0],
+                opacity: [0, 1],
+                delay: anime.stagger(100),
+                duration: 600,
+                easing: 'easeOutExpo'
+            });
+        }
+
+        function createReportRow(report) {
+            const row = document.createElement('tr');
+            const timeAgo = getTimeAgo(report.submittedDate);
+            
+            row.innerHTML = `
+                <td class="mono text-blue-600">${report.id}</td>
+                <td class="font-medium text-gray-900">${report.title}</td>
+                <td class="text-gray-600">${report.category}</td>
+                <td><span class="status-badge status-${report.status}">${formatStatus(report.status)}</span></td>
+                <td>
+                    <div class="flex items-center space-x-2">
+                        <div class="priority-indicator priority-${report.priority}"></div>
+                        <span class="text-sm text-gray-600">${report.priority}</span>
+                    </div>
+                </td>
+                <td class="text-gray-600">${report.assignedTo}</td>
+                <td>
+                    <div class="flex items-center space-x-2">
+                        <button class="text-blue-600 hover:text-blue-800" onclick="viewReport('${report.id}')" title="View Report">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </button>
+                        <button class="text-green-600 hover:text-green-800" onclick="editReport('${report.id}')" title="Edit Report">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                        </button>
+                        <button class="text-red-600 hover:text-red-800" onclick="deleteReport('${report.id}')" title="Delete Report">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </td>
+            `;
+            
+            return row;
+        }
+
+        function initializeCharts() {
+            initTrendChart();
+            initCategoryChart();
+        }
+
+        function initTrendChart() {
+            const chartDom = document.getElementById('trendChart');
+            if (!chartDom) return;
+            
+            const myChart = echarts.init(chartDom);
+            
+            const option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross'
+                    }
+                },
+                legend: {
+                    data: ['Submitted', 'Completed', 'In Progress']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['Jan 1', 'Jan 8', 'Jan 15', 'Jan 22', 'Jan 29', 'Feb 5', 'Feb 12']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: 'Submitted',
+                        type: 'line',
+                        stack: 'Total',
+                        areaStyle: {},
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [120, 132, 101, 134, 90, 230, 210],
+                        itemStyle: { color: '#3b82f6' }
+                    },
+                    {
+                        name: 'Completed',
+                        type: 'line',
+                        stack: 'Total',
+                        areaStyle: {},
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [220, 182, 191, 234, 290, 330, 310],
+                        itemStyle: { color: '#10b981' }
+                    },
+                    {
+                        name: 'In Progress',
+                        type: 'line',
+                        stack: 'Total',
+                        areaStyle: {},
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [150, 232, 201, 154, 190, 330, 410],
+                        itemStyle: { color: '#f59e0b' }
+                    }
+                ]
+            };
+            
+            myChart.setOption(option);
+            
+            // Responsive
+            window.addEventListener('resize', function() {
+                myChart.resize();
+            });
+        }
+
+        function initCategoryChart() {
+            const chartDom = document.getElementById('categoryChart');
+            if (!chartDom) return;
+            
+            const myChart = echarts.init(chartDom);
+            
+            const option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    textStyle: {
+                        fontSize: 12
+                    }
+                },
+                series: [
+                    {
+                        name: 'Reports by Category',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        center: ['60%', '50%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 8,
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 16,
+                                fontWeight: 'bold'
+                            },
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: [
+                            { value: 234, name: 'Infrastructure', itemStyle: { color: '#3b82f6' } },
+                            { value: 178, name: 'Maintenance', itemStyle: { color: '#10b981' } },
+                            { value: 156, name: 'Facilities', itemStyle: { color: '#f59e0b' } },
+                            { value: 89, name: 'Academic', itemStyle: { color: '#8b5cf6' } },
+                            { value: 45, name: 'Security', itemStyle: { color: '#06b6d4' } }
+                        ]
+                    }
+                ]
+            };
+            
+            myChart.setOption(option);
+            
+            // Responsive
+            window.addEventListener('resize', function() {
+                myChart.resize();
+            });
+        }
+
+        function animateMetrics() {
+            // Animate metric counters
+            const metrics = [
+                { element: 'totalReports', target: 1247, duration: 2000 },
+                { element: 'activeUsers', target: 324, duration: 1800 },
+                { element: 'avgResponseTime', target: 2.4, duration: 2200, suffix: 'h' },
+                { element: 'completionRate', target: 94.2, duration: 2400, suffix: '%' }
+            ];
+            
+            metrics.forEach(metric => {
+                const element = document.getElementById(metric.element);
+                if (!element) return;
+                
+                anime({
+                    targets: { count: 0 },
+                    count: metric.target,
+                    duration: metric.duration,
+                    easing: 'easeOutExpo',
+                    update: function(anim) {
+                        const value = metric.suffix === '%' || metric.suffix === 'h' 
+                            ? anim.animatables[0].target.count.toFixed(1) 
+                            : Math.floor(anim.animatables[0].target.count);
+                        element.textContent = value + (metric.suffix || '');
+                    }
+                });
+            });
+        }
+
+        // Utility functions
+        function formatStatus(status) {
+            const statusMap = {
+                'pending': 'Pending',
+                'processing': 'In Progress',
+                'validating': 'Waiting for Validation',
+                'completed': 'Completed',
+                'rejected': 'Rejected'
+            };
+            return statusMap[status] || status;
+        }
+
+        function getTimeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 1) return 'Yesterday';
+            if (diffDays < 7) return `${diffDays} days ago`;
+            if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`;
+            return `${Math.ceil(diffDays / 30)} months ago`;
+        }
+
+        // Action functions
+        function viewReport(reportId) {
+            localStorage.setItem('selectedReportId', reportId);
+            window.location.href = 'report-detail.html';
+        }
+
+        function editReport(reportId) {
+            alert(`Edit report: ${reportId}`);
+        }
+
+        function deleteReport(reportId) {
+            if (confirm(`Are you sure you want to delete report ${reportId}?`)) {
+                alert(`Report ${reportId} deleted.`);
+                // Remove from table
+                const row = event.target.closest('tr');
+                row.remove();
+            }
+        }
+
+        function updateTrendChart(period) {
+            console.log(`Updating trend chart for period: ${period}`);
+            // This would typically fetch new data and update the chart
+        }
+
+        function exportData() {
+            alert('Exporting system data...');
+        }
+
+        function systemSettings() {
+            alert('Opening system settings...');
+        }
+
+        function viewAllReports() {
+            window.location.href = 'index.html';
+        }
+
+        function manageUsers() {
+            alert('Opening user management interface...');
+        }
+
+        function viewSystemLogs() {
+            alert('Opening system logs...');
+        }
+
+        function generateReport() {
+            alert('Generating comprehensive system report...');
+        }
+
+        function backupData() {
+            alert('Starting data backup process...');
+        }
+
+        function sendNotification() {
+            const message = prompt('Enter notification message:');
+            if (message) {
+                alert(`Notification sent: ${message}`);
+            }
+        }
+
+        function maintenanceMode() {
+            if (confirm('Are you sure you want to enable maintenance mode? This will make the system unavailable to users.')) {
+                alert('Maintenance mode enabled. Users will see a maintenance message.');
+            }
+        }
+    </script>
+</body>
+</html>
